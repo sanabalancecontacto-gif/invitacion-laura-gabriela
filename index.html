@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>¡Cumpleaños 4 de Laura Gabriela! ❄️ Aventura Congelada</title>
+    
+    <!-- Meta tags SEO / WhatsApp Share -->
+    <meta name="description" content="¡Estás invitado a la Aventura Congelada de Laura Gabriela en su Cumpleaños Número 4! Acompáñanos a celebrar.">
+    <meta property="og:title" content="¡Invitación: 4º Cumpleaños de Laura Gabriela! ❄️">
+    <meta property="og:description" content="Ven a jugar y descubrir todos los detalles de la fiesta congelada de Laura Gabriela.">
+    <meta property="og:image" content="./assets/foto invitación.jpeg">
+    
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;600;700&family=Outfit:wght@300;400;600;800&family=Cinzel:wght@700&display=swap" rel="stylesheet">
+    
+    <!-- FontAwesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+    <!-- Snowfall Canvas Overlay -->
+    <canvas id="snowCanvas"></canvas>
+
+    <!-- App Container -->
+    <div id="appContainer">
+
+        <!-- ========================================== -->
+        <!-- SCREEN 1: INTRO / WELCOME                  -->
+        <!-- ========================================== -->
+        <section id="introScreen" class="screen active">
+            <div class="glass-card welcome-card">
+                <div class="badge-snowflake">
+                    <i class="fa-solid fa-snowflake fa-spin-slow"></i>
+                </div>
+                <h2 class="subtitle-frozen">¡Aventura Congelada!</h2>
+                <h1 class="main-title">Laura Gabriela</h1>
+                <p class="age-tag">🎉 ¡Cumple 4 Años! 🎉</p>
+
+                <div class="avatar-preview">
+                    <div class="ice-frame">
+                        <img src="./assets/personaje.jpeg" alt="Laura Gabriela" class="avatar-img">
+                    </div>
+                </div>
+
+                <p class="intro-desc">
+                    ¡El reino de Arendelle está congelado! Ayuda a Laura Gabriela a romper los bloques de hielo mágicos para descubrir la invitación a su fiesta.
+                </p>
+
+                <div class="btn-group">
+                    <button id="btnStartGame" class="btn-frozen glow-effect">
+                        <i class="fa-solid fa-gamepad"></i> JUGAR Y DESCUBRIR
+                    </button>
+                    <button id="btnSkipToInvite" class="btn-secondary-frozen">
+                        <i class="fa-solid fa-envelope-open-text"></i> Ver Invitación Directa
+                    </button>
+                </div>
+            </div>
+        </section>
+
+
+        <!-- ========================================== -->
+        <!-- SCREEN 2: INTERACTIVE GAME                 -->
+        <!-- ========================================== -->
+        <section id="gameScreen" class="screen">
+            <div class="game-header">
+                <div class="game-progress-bar">
+                    <div class="progress-info">
+                        <span><i class="fa-solid fa-icicles"></i> Hielo Rompido:</span>
+                        <span id="progressPercent">0%</span>
+                    </div>
+                    <div class="bar-outer">
+                        <div id="barInner" class="bar-inner" style="width: 0%;"></div>
+                    </div>
+                </div>
+                <button id="btnFastForward" class="btn-icon-frozen" title="Ver invitación ya">
+                    <i class="fa-solid fa-forward-fast"></i> Revelar Ya
+                </button>
+            </div>
+
+            <div class="canvas-wrapper">
+                <canvas id="gameCanvas"></canvas>
+
+                <!-- Touch / Drag Help Indicator -->
+                <div id="touchGuide" class="touch-guide">
+                    <i class="fa-solid fa-hand-pointer pulse-animation"></i>
+                    <span>Desliza para mover a Laura Gabriela</span>
+                </div>
+            </div>
+        </section>
+
+
+        <!-- ========================================== -->
+        <!-- SCREEN 3: CELEBRATION & INVITATION CARD    -->
+        <!-- ========================================== -->
+        <section id="inviteScreen" class="screen">
+            <div class="glass-card invite-card">
+                
+                <!-- Frozen Header Banner -->
+                <div class="invite-header">
+                    <span class="royal-tag"><i class="fa-solid fa-crown"></i> TE INVITAMOS A CELEBRAR <i class="fa-solid fa-crown"></i></span>
+                    <h1 class="invite-name">Laura Gabriela</h1>
+                    <div class="years-pill">4 AÑOS DE MAGIA</div>
+                </div>
+
+                <!-- Beautiful Un-damaged Photo Frame -->
+                <div class="photo-container">
+                    <div class="royal-ice-frame">
+                        <img src="./assets/foto invitación.jpeg" alt="Laura Gabriela Cumpleaños 4" class="birthday-girl-photo">
+                        <div class="frame-shine"></div>
+                        <div class="corner-crystal top-left"></div>
+                        <div class="corner-crystal top-right"></div>
+                        <div class="corner-crystal bottom-left"></div>
+                        <div class="corner-crystal bottom-right"></div>
+                    </div>
+                </div>
+
+                <!-- Event Details Grid -->
+                <div class="details-grid">
+
+                    <!-- Date Card -->
+                    <div class="detail-item">
+                        <div class="detail-icon"><i class="fa-regular fa-calendar-check"></i></div>
+                        <div class="detail-text">
+                            <h3>FECHA</h3>
+                            <p>Viernes, 27 de Septiembre</p>
+                        </div>
+                    </div>
+
+                    <!-- Time Card -->
+                    <div class="detail-item">
+                        <div class="detail-icon"><i class="fa-regular fa-clock"></i></div>
+                        <div class="detail-text">
+                            <h3>HORA</h3>
+                            <p>4:00 PM</p>
+                        </div>
+                    </div>
+
+                    <!-- Location Card -->
+                    <div class="detail-item full-width">
+                        <div class="detail-icon"><i class="fa-solid fa-location-dot"></i></div>
+                        <div class="detail-text">
+                            <h3>LUGAR DE LA FIESTA</h3>
+                            <p class="address-text">10798 Briar Forest Dr.</p>
+                            <a href="https://www.google.com/maps/search/?api=1&query=10798+Briar+Forest+Dr" target="_blank" class="map-link">
+                                <i class="fa-solid fa-map-location-dot"></i> Abrir en Google Maps
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- RSVP / Confirm Button -->
+                <div class="rsvp-box">
+                    <p class="rsvp-note">¡Esperamos contar con tu presencia!</p>
+                    <a href="https://wa.me/13463097313?text=¡Hola%20Elvira!%20Confirmo%20mi%20asistencia%20al%20cumpleaños%20de%20Laura%20Gabriela%20🎂❄️" target="_blank" class="btn-whatsapp glow-effect">
+                        <i class="fa-brands fa-whatsapp"></i> Confirmar Asistencia con Elvira
+                    </a>
+                </div>
+
+                <div class="replay-footer">
+                    <button id="btnReplayGame" class="btn-link">
+                        <i class="fa-solid fa-rotate-right"></i> Volver a jugar el juego rompe-hielo
+                    </button>
+                </div>
+            </div>
+        </section>
+
+    </div>
+
+    <!-- Celebration Confetti Canvas -->
+    <canvas id="confettiCanvas"></canvas>
+
+    <script src="game.js"></script>
+</body>
+</html>
