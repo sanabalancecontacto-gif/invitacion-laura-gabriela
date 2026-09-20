@@ -1,17 +1,17 @@
 /* ==========================================================================
-   Invitación Aventura Congelada - Laura Gabriela (4º Cumpleaños)
-   Styling System: Frozen Glassmorphism, Responsive, Vibrant & Magical
+   Invitación Pool Party - Laura (4º Cumpleaños)
+   Clean Frozen Aesthetic, High Contrast Typography & Responsive Design
    ========================================================================== */
 
 :root {
     --primary-ice: #00d2ff;
     --secondary-ice: #3a7bd5;
-    --dark-frozen: #0a1826;
-    --accent-gold: #ffd700;
+    --dark-frozen: #06111c;
+    --accent-gold: #ffe600;
     --accent-pink: #ff65a3;
     --crystal-white: #ffffff;
-    --glass-bg: rgba(10, 24, 38, 0.82);
-    --glass-border: rgba(0, 210, 255, 0.45);
+    --glass-bg: rgba(6, 17, 28, 0.88);
+    --glass-border: rgba(0, 210, 255, 0.5);
     --font-heading: 'Fredoka', 'Outfit', sans-serif;
     --font-royal: 'Cinzel', serif;
     --font-body: 'Outfit', sans-serif;
@@ -31,8 +31,7 @@ html, body {
     height: 100%;
     overflow: hidden;
     font-family: var(--font-body);
-    background-color: var(--dark-frozen);
-    background-image: radial-gradient(circle at 50% 20%, #1a3c5a 0%, #06111c 100%);
+    background: #040d1a url('./assets/clean_frozen_bg.png') center/cover no-repeat fixed;
     color: var(--crystal-white);
 }
 
@@ -67,12 +66,12 @@ html, body {
 .screen {
     display: none;
     width: 100%;
-    max-width: 500px;
+    max-width: 480px;
     height: 100%;
-    max-height: 920px;
+    max-height: 900px;
     opacity: 0;
-    transform: scale(0.95);
-    transition: opacity 0.5s ease, transform 0.5s ease;
+    transform: scale(0.96);
+    transition: opacity 0.4s ease, transform 0.4s ease;
     flex-direction: column;
     justify-content: center;
     align-items: center;
@@ -90,12 +89,12 @@ html, body {
 
 .glass-card {
     background: var(--glass-bg);
-    backdrop-filter: blur(16px);
-    -webkit-backdrop-filter: blur(16px);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
     border: 2px solid var(--glass-border);
-    box-shadow: 0 12px 40px rgba(0, 0, 0, 0.6), inset 0 0 20px rgba(0, 210, 255, 0.2);
-    border-radius: 28px;
-    padding: 22px 18px;
+    box-shadow: 0 15px 45px rgba(0, 0, 0, 0.8), inset 0 0 25px rgba(0, 210, 255, 0.2);
+    border-radius: 26px;
+    padding: 24px 20px;
     width: 100%;
     text-align: center;
     position: relative;
@@ -125,8 +124,8 @@ html, body {
     display: flex;
     justify-content: center;
     align-items: center;
-    background: rgba(0, 0, 0, 0.7);
-    backdrop-filter: blur(6px);
+    background: rgba(0, 0, 0, 0.75);
+    backdrop-filter: blur(8px);
     opacity: 0;
     pointer-events: none;
     transition: opacity 0.3s ease;
@@ -140,18 +139,37 @@ html, body {
 .polaroid-card {
     position: relative;
     background: #ffffff;
-    padding: 12px 12px 18px 12px;
-    border-radius: 14px;
-    box-shadow: 0 15px 35px rgba(0, 210, 255, 0.5), 0 5px 15px rgba(0, 0, 0, 0.8);
-    transform: scale(0.6) rotate(-5deg);
-    transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-    max-width: 280px;
-    width: 82%;
+    padding: 14px 14px 18px 14px;
+    border-radius: 16px;
+    box-shadow: 0 20px 40px rgba(0, 210, 255, 0.6), 0 10px 25px rgba(0, 0, 0, 0.9);
+    transform: scale(0.7) rotate(-4deg);
+    transition: transform 0.35s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    max-width: 300px;
+    width: 85%;
     text-align: center;
 }
 
 .memory-popup.active .polaroid-card {
     transform: scale(1) rotate(0deg);
+}
+
+.btn-close-popup {
+    position: absolute;
+    top: -12px;
+    right: -12px;
+    width: 34px;
+    height: 34px;
+    border-radius: 50%;
+    background: var(--accent-pink);
+    color: #fff;
+    border: 2px solid #fff;
+    font-size: 16px;
+    cursor: pointer;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.5);
+    z-index: 10;
 }
 
 .polaroid-pin {
@@ -163,19 +181,26 @@ html, body {
     filter: drop-shadow(0 2px 5px rgba(0,0,0,0.4));
 }
 
-.polaroid-card img {
+.polaroid-img-wrapper {
     width: 100%;
-    height: 220px;
-    object-fit: cover;
-    border-radius: 8px;
+    height: 230px;
+    border-radius: 10px;
+    overflow: hidden;
+    background: #06111c;
     border: 1px solid #ddd;
+}
+
+.polaroid-img-wrapper img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
     display: block;
 }
 
 .polaroid-caption {
     font-family: var(--font-heading);
-    color: #1a3c5a;
-    font-size: 14px;
+    color: #0b2540;
+    font-size: 15px;
     font-weight: 700;
     margin-top: 10px;
 }
@@ -186,15 +211,14 @@ html, body {
    ========================================================================== */
 
 .welcome-card {
-    background: linear-gradient(145deg, rgba(13, 35, 57, 0.85), rgba(6, 17, 28, 0.95)), url('./assets/Frozen_path_through_snowy_forest_20260919111318.jpeg') center/cover no-repeat;
-    background-blend-mode: overlay;
+    background: rgba(6, 17, 28, 0.88);
 }
 
 .badge-snowflake {
-    font-size: 38px;
+    font-size: 36px;
     color: var(--primary-ice);
-    filter: drop-shadow(0 0 10px var(--primary-ice));
-    margin-bottom: 5px;
+    filter: drop-shadow(0 0 12px var(--primary-ice));
+    margin-bottom: 4px;
 }
 
 .fa-spin-slow {
@@ -209,54 +233,31 @@ html, body {
 .subtitle-frozen {
     font-family: var(--font-royal);
     color: var(--primary-ice);
-    letter-spacing: 2px;
-    font-size: 14px;
+    letter-spacing: 3px;
+    font-size: 13px;
     text-transform: uppercase;
-    margin-bottom: 4px;
-}
-
-.main-title {
-    font-family: var(--font-heading);
-    font-size: 34px;
-    font-weight: 700;
-    background: linear-gradient(180deg, #ffffff 0%, #b3f0ff 100%);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    text-shadow: 0 4px 20px rgba(0, 210, 255, 0.5);
-    line-height: 1.1;
-}
-
-.age-tag {
-    display: inline-block;
-    background: linear-gradient(90deg, #ff65a3, #ff8cb7);
-    color: #fff;
-    font-weight: 700;
-    padding: 6px 18px;
-    border-radius: 20px;
-    margin: 10px 0 16px 0;
-    box-shadow: 0 4px 15px rgba(255, 101, 163, 0.4);
-    font-size: 15px;
+    margin-bottom: 12px;
 }
 
 .avatar-preview {
     display: flex;
     justify-content: center;
-    margin-bottom: 16px;
+    margin-bottom: 14px;
 }
 
 .ice-frame {
-    width: 130px;
-    height: 130px;
+    width: 135px;
+    height: 135px;
     border-radius: 50%;
     padding: 5px;
     background: linear-gradient(135deg, var(--primary-ice), #ffffff, var(--secondary-ice));
-    box-shadow: 0 0 25px rgba(0, 210, 255, 0.7);
+    box-shadow: 0 0 30px rgba(0, 210, 255, 0.7);
     animation: float 4s ease-in-out infinite;
 }
 
 @keyframes float {
     0%, 100% { transform: translateY(0px); }
-    50% { transform: translateY(-8px); }
+    50% { transform: translateY(-6px); }
 }
 
 .avatar-img {
@@ -264,15 +265,43 @@ html, body {
     height: 100%;
     border-radius: 50%;
     object-fit: cover;
-    object-position: center top;
+    object-position: center 25%;
     border: 3px solid #06111c;
+}
+
+.main-title {
+    font-family: var(--font-heading);
+    font-size: 36px;
+    font-weight: 700;
+    color: #ffffff;
+    text-shadow: 0 0 20px rgba(0, 210, 255, 0.8), 0 3px 6px rgba(0,0,0,0.8);
+    line-height: 1.1;
+    margin-bottom: 4px;
+}
+
+.age-tag {
+    display: inline-block;
+    background: linear-gradient(90deg, #ff65a3, #ff8cb7);
+    color: #fff;
+    font-weight: 700;
+    padding: 6px 20px;
+    border-radius: 20px;
+    margin: 8px 0 16px 0;
+    box-shadow: 0 4px 15px rgba(255, 101, 163, 0.5);
+    font-size: 15px;
+    letter-spacing: 1px;
 }
 
 .intro-desc {
     font-size: 14px;
     line-height: 1.5;
-    color: #d1f4ff;
+    color: #e1f7ff;
     margin-bottom: 22px;
+    text-shadow: 0 1px 3px rgba(0,0,0,0.8);
+}
+
+.intro-desc strong {
+    color: var(--accent-gold);
 }
 
 /* BUTTONS */
@@ -306,9 +335,9 @@ html, body {
 }
 
 .btn-secondary-frozen {
-    background: rgba(255, 255, 255, 0.1);
-    color: #b8ebff;
-    border: 1px solid rgba(0, 210, 255, 0.3);
+    background: rgba(255, 255, 255, 0.12);
+    color: #cbebff;
+    border: 1px solid rgba(0, 210, 255, 0.4);
     padding: 12px 20px;
     border-radius: 50px;
     font-size: 14px;
@@ -322,7 +351,7 @@ html, body {
 }
 
 .btn-secondary-frozen:hover {
-    background: rgba(255, 255, 255, 0.2);
+    background: rgba(255, 255, 255, 0.25);
     color: #fff;
 }
 
@@ -338,7 +367,7 @@ html, body {
     left: -50%;
     width: 200%;
     height: 200%;
-    background: linear-gradient(60deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+    background: linear-gradient(60deg, transparent, rgba(255, 255, 255, 0.35), transparent);
     transform: rotate(30deg);
     animation: shine 3s infinite;
 }
@@ -354,7 +383,7 @@ html, body {
    ========================================================================== */
 
 #gameScreen {
-    max-width: 520px;
+    max-width: 500px;
     height: 100%;
     justify-content: space-between;
     padding: 10px 0;
@@ -365,12 +394,12 @@ html, body {
     display: flex;
     align-items: center;
     gap: 10px;
-    padding: 0 12px 10px 12px;
+    padding: 0 10px 8px 10px;
 }
 
 .game-progress-bar {
     flex: 1;
-    background: rgba(10, 24, 38, 0.85);
+    background: rgba(4, 14, 25, 0.9);
     border: 1px solid var(--glass-border);
     padding: 8px 12px;
     border-radius: 16px;
@@ -406,7 +435,7 @@ html, body {
 }
 
 .btn-icon-frozen {
-    background: rgba(0, 210, 255, 0.15);
+    background: rgba(0, 210, 255, 0.2);
     border: 1px solid var(--primary-ice);
     color: var(--crystal-white);
     padding: 10px 14px;
@@ -427,11 +456,11 @@ html, body {
     display: flex;
     justify-content: center;
     align-items: center;
-    border-radius: 20px;
+    border-radius: 22px;
     overflow: hidden;
     border: 2px solid var(--glass-border);
-    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.7);
-    background: #06111c;
+    box-shadow: 0 10px 35px rgba(0, 0, 0, 0.85);
+    background: #040d1a;
 }
 
 #gameCanvas {
@@ -446,7 +475,7 @@ html, body {
     bottom: 20px;
     left: 50%;
     transform: translateX(-50%);
-    background: rgba(0, 0, 0, 0.75);
+    background: rgba(0, 0, 0, 0.8);
     border: 1px solid var(--primary-ice);
     padding: 8px 16px;
     border-radius: 30px;
@@ -476,10 +505,9 @@ html, body {
    ========================================================================== */
 
 .invite-card {
-    background: linear-gradient(180deg, rgba(8, 25, 43, 0.93) 0%, rgba(4, 14, 25, 0.97) 100%), url('./assets/Transforming_house_into_Arendell…_20260919111340.jpeg') center/cover no-repeat;
-    background-blend-mode: overlay;
+    background: rgba(6, 17, 28, 0.92);
     border: 2px solid rgba(0, 210, 255, 0.6);
-    padding: 22px 16px;
+    padding: 24px 18px;
 }
 
 .invite-header {
@@ -495,13 +523,14 @@ html, body {
     margin-bottom: 4px;
 }
 
-.invite-name {
+.invite-main-heading {
     font-family: var(--font-heading);
-    font-size: 34px;
-    font-weight: 700;
-    color: #fff;
+    font-size: 24px;
+    font-weight: 800;
+    color: #ffffff;
     text-shadow: 0 0 15px rgba(0, 210, 255, 0.8);
-    line-height: 1.1;
+    line-height: 1.25;
+    letter-spacing: 0.5px;
 }
 
 .years-pill {
@@ -510,27 +539,27 @@ html, body {
     color: #fff;
     font-size: 13px;
     font-weight: 800;
-    padding: 4px 16px;
+    padding: 5px 18px;
     border-radius: 20px;
-    margin-top: 6px;
+    margin-top: 8px;
     letter-spacing: 1px;
 }
 
-/* ROYAL UN-DAMAGED PHOTO FRAME */
+/* ROYAL UN-DEFORMED PHOTO FRAME */
 .photo-container {
     display: flex;
     justify-content: center;
-    margin: 14px 0 18px 0;
+    margin: 14px 0 16px 0;
 }
 
 .royal-ice-frame {
     position: relative;
-    width: 220px;
-    height: 270px;
-    border-radius: 24px;
-    padding: 8px;
-    background: linear-gradient(135deg, rgba(255, 255, 255, 0.9), var(--primary-ice), rgba(58, 123, 213, 0.9));
-    box-shadow: 0 0 35px rgba(0, 210, 255, 0.6), 0 10px 25px rgba(0,0,0,0.5);
+    width: 210px;
+    height: 260px;
+    border-radius: 22px;
+    padding: 6px;
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.95), var(--primary-ice), rgba(58, 123, 213, 0.95));
+    box-shadow: 0 0 35px rgba(0, 210, 255, 0.6), 0 10px 25px rgba(0,0,0,0.6);
 }
 
 .birthday-girl-photo {
@@ -540,19 +569,36 @@ html, body {
     object-position: center top;
     border-radius: 16px;
     display: block;
-    border: 2px solid rgba(255, 255, 255, 0.8);
+    border: 2px solid rgba(255, 255, 255, 0.9);
 }
 
 .frame-shine {
     position: absolute;
-    inset: 8px;
+    inset: 6px;
     border-radius: 16px;
     border: 1px solid rgba(255, 255, 255, 0.4);
     pointer-events: none;
     box-shadow: inset 0 0 15px rgba(255, 255, 255, 0.3);
 }
 
-/* DETAILS GRID */
+/* SWIMSUIT POOL PARTY BANNER */
+.pool-party-banner {
+    background: linear-gradient(90deg, #00d2ff, #0099ff);
+    color: #ffffff;
+    font-weight: 800;
+    font-size: 14px;
+    padding: 10px 16px;
+    border-radius: 30px;
+    margin-bottom: 16px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    box-shadow: 0 4px 15px rgba(0, 210, 255, 0.4);
+    border: 1px solid #ffffff;
+}
+
+/* DETAILS GRID WITH HIGH CONTRAST */
 .details-grid {
     display: grid;
     grid-template-columns: 1fr 1fr;
@@ -562,13 +608,14 @@ html, body {
 }
 
 .detail-item {
-    background: rgba(255, 255, 255, 0.08);
-    border: 1px solid rgba(0, 210, 255, 0.25);
+    background: rgba(10, 30, 50, 0.85);
+    border: 1px solid rgba(0, 210, 255, 0.4);
     border-radius: 16px;
-    padding: 10px 12px;
+    padding: 12px 14px;
     display: flex;
     align-items: center;
     gap: 10px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.4);
 }
 
 .detail-item.full-width {
@@ -576,15 +623,15 @@ html, body {
 }
 
 .detail-icon {
-    width: 40px;
-    height: 40px;
+    width: 42px;
+    height: 42px;
     border-radius: 12px;
-    background: rgba(0, 210, 255, 0.2);
+    background: rgba(0, 210, 255, 0.25);
     color: var(--primary-ice);
     display: flex;
     justify-content: center;
     align-items: center;
-    font-size: 18px;
+    font-size: 20px;
     flex-shrink: 0;
 }
 
@@ -594,17 +641,19 @@ html, body {
     color: var(--accent-gold);
     letter-spacing: 1px;
     margin-bottom: 2px;
+    text-shadow: 0 1px 3px rgba(0,0,0,0.9);
 }
 
 .detail-text p {
-    font-size: 13px;
-    font-weight: 600;
-    color: #fff;
+    font-size: 14px;
+    font-weight: 700;
+    color: #ffffff;
+    text-shadow: 0 1px 3px rgba(0,0,0,0.9);
 }
 
 .address-text {
-    font-size: 14px;
-    font-weight: 700;
+    font-size: 15px;
+    font-weight: 800;
     color: #ffffff;
     margin-bottom: 4px;
 }
@@ -612,7 +661,7 @@ html, body {
 .map-link {
     display: inline-flex;
     align-items: center;
-    gap: 5px;
+    gap: 6px;
     color: var(--primary-ice);
     font-size: 12px;
     font-weight: 700;
@@ -665,9 +714,10 @@ html, body {
     border-radius: 12px;
     overflow: hidden;
     border: 2px solid var(--primary-ice);
-    box-shadow: 0 4px 10px rgba(0,0,0,0.5);
+    box-shadow: 0 4px 10px rgba(0,0,0,0.6);
     cursor: pointer;
     transition: transform 0.2s;
+    background: #040d1a;
 }
 
 .gallery-item:hover {
@@ -699,7 +749,7 @@ html, body {
     background: linear-gradient(135deg, #25d366 0%, #128c7e 100%);
     color: #ffffff;
     text-decoration: none;
-    padding: 15px 20px;
+    padding: 16px 20px;
     border-radius: 50px;
     font-size: 15px;
     font-weight: 700;
@@ -738,10 +788,10 @@ html, body {
 
 /* Responsive adjustment for small mobile screens */
 @media (max-width: 380px) {
-    .main-title { font-size: 28px; }
-    .invite-name { font-size: 28px; }
-    .royal-ice-frame { width: 180px; height: 230px; }
+    .main-title { font-size: 30px; }
+    .invite-main-heading { font-size: 20px; }
+    .royal-ice-frame { width: 180px; height: 220px; }
     .details-grid { grid-template-columns: 1fr; }
     .detail-item.full-width { grid-column: span 1; }
-    .glass-card { padding: 16px 12px; }
+    .glass-card { padding: 18px 12px; }
 }

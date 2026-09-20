@@ -3,18 +3,18 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>¡Cumpleaños 4 de Laura Gabriela! ❄️ Aventura Congelada</title>
+    <title>¡Pool Party 4º Cumpleaños de Laura! ❄️🏊‍♀️</title>
     
     <!-- Meta tags SEO / WhatsApp Share -->
-    <meta name="description" content="¡Estás invitado a la Aventura Congelada de Laura Gabriela en su Cumpleaños Número 4! Acompáñanos a celebrar.">
-    <meta property="og:title" content="¡Invitación: 4º Cumpleaños de Laura Gabriela! ❄️">
-    <meta property="og:description" content="Ven a jugar y descubrir los recuerdos y detalles de la fiesta congelada de Laura Gabriela.">
+    <meta name="description" content="¡Te invitamos a la Pool Party de Laura para celebrar sus 4 Años! Ven a jugar y celebrar con nosotros.">
+    <meta property="og:title" content="¡Pool Party: 4º Cumpleaños de Laura! ❄️🏊‍♀️">
+    <meta property="og:description" content="¡Ven con tu traje de baño a la fiesta congelada de Laura!">
     <meta property="og:image" content="./assets/foto_invitacion_LAU.jpeg">
     
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;600;700&family=Outfit:wght@300;400;600;800&family=Cinzel:wght@700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;600;700&family=Outfit:wght@400;600;700;800&family=Cinzel:wght@700&display=swap" rel="stylesheet">
     
     <!-- FontAwesome icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -29,9 +29,12 @@
     <!-- Floating Memory Photo Popup Modal -->
     <div id="memoryPopup" class="memory-popup">
         <div class="polaroid-card">
+            <button id="btnClosePopup" class="btn-close-popup"><i class="fa-solid fa-xmark"></i></button>
             <div class="polaroid-pin">❄️</div>
-            <img id="memoryPopupImg" src="" alt="Recuerdo de Laura Gabriela">
-            <p class="polaroid-caption">✨ ¡Recuerdo Descubierto! ✨</p>
+            <div class="polaroid-img-wrapper">
+                <img id="memoryPopupImg" src="" alt="Recuerdo de Laura">
+            </div>
+            <p class="polaroid-caption">✨ ¡Recuerdo de Laura! ✨</p>
         </div>
     </div>
 
@@ -46,18 +49,20 @@
                 <div class="badge-snowflake">
                     <i class="fa-solid fa-snowflake fa-spin-slow"></i>
                 </div>
-                <h2 class="subtitle-frozen">¡Aventura Congelada!</h2>
-                <h1 class="main-title">Laura Gabriela</h1>
-                <p class="age-tag">🎉 ¡Cumple 4 Años! 🎉</p>
-
+                
+                <h2 class="subtitle-frozen">¡AVENTURA CONGELADA!</h2>
+                
                 <div class="avatar-preview">
                     <div class="ice-frame">
-                        <img src="./assets/foto_invitacion_LAU.jpeg" alt="Laura Gabriela" class="avatar-img">
+                        <img src="./assets/foto_invitacion_LAU.jpeg" alt="Laura" class="avatar-img">
                     </div>
                 </div>
 
+                <h1 class="main-title">Laura</h1>
+                <p class="age-tag">🎉 ¡POOL PARTY - 4 AÑOS! 🏊‍♀️</p>
+
                 <p class="intro-desc">
-                    ¡El reino está congelado! Rompe los bloques de hielo mágicos para <strong>revelar fotos secretas</strong> de Laura Gabriela con su familia y amigos, y descubrir la invitación.
+                    ¡Ayuda a Laura a romper los cristales de hielo para descubrir <strong>sus recuerdos fotográficos</strong> y revelar la invitación!
                 </p>
 
                 <div class="btn-group">
@@ -79,7 +84,7 @@
             <div class="game-header">
                 <div class="game-progress-bar">
                     <div class="progress-info">
-                        <span><i class="fa-solid fa-camera-retro"></i> Recuerdos: <strong id="photosCount">0/9</strong></span>
+                        <span><i class="fa-solid fa-images"></i> Recuerdos: <strong id="photosCount">0/9</strong></span>
                         <span><i class="fa-solid fa-icicles"></i> Hielo: <strong id="progressPercent">0%</strong></span>
                     </div>
                     <div class="bar-outer">
@@ -87,7 +92,7 @@
                     </div>
                 </div>
                 <button id="btnFastForward" class="btn-icon-frozen" title="Ver invitación ya">
-                    <i class="fa-solid fa-forward-fast"></i> Revelar Ya
+                    <i class="fa-solid fa-forward-fast"></i> Ver Invitación
                 </button>
             </div>
 
@@ -97,7 +102,7 @@
                 <!-- Touch / Drag Help Indicator -->
                 <div id="touchGuide" class="touch-guide">
                     <i class="fa-solid fa-hand-pointer pulse-animation"></i>
-                    <span>Desliza para mover a Laura Gabriela</span>
+                    <span>Desliza para mover a Laura</span>
                 </div>
             </div>
         </section>
@@ -109,23 +114,24 @@
         <section id="inviteScreen" class="screen">
             <div class="glass-card invite-card">
                 
-                <!-- Frozen Header Banner -->
+                <!-- Clean Frozen Header -->
                 <div class="invite-header">
-                    <span class="royal-tag"><i class="fa-solid fa-crown"></i> TE INVITAMOS A CELEBRAR <i class="fa-solid fa-crown"></i></span>
-                    <h1 class="invite-name">Laura Gabriela</h1>
-                    <div class="years-pill">4 AÑOS DE MAGIA</div>
+                    <span class="royal-tag">✨ TE INVITAMOS A LA ✨</span>
+                    <h1 class="invite-main-heading">POOL PARTY DE LAURA</h1>
+                    <div class="years-pill">PARA CELEBRAR SUS 4 AÑOS</div>
                 </div>
 
-                <!-- Beautiful Un-damaged Photo Frame -->
+                <!-- Beautiful Un-deformed Photo Frame -->
                 <div class="photo-container">
                     <div class="royal-ice-frame">
-                        <img src="./assets/foto_invitacion_LAU.jpeg" alt="Laura Gabriela Cumpleaños 4" class="birthday-girl-photo">
+                        <img src="./assets/foto_invitacion_LAU.jpeg" alt="Laura Cumpleaños 4" class="birthday-girl-photo">
                         <div class="frame-shine"></div>
-                        <div class="corner-crystal top-left"></div>
-                        <div class="corner-crystal top-right"></div>
-                        <div class="corner-crystal bottom-left"></div>
-                        <div class="corner-crystal bottom-right"></div>
                     </div>
+                </div>
+
+                <!-- Swimsuit Note Banner -->
+                <div class="pool-party-banner">
+                    <i class="fa-solid fa-person-swimming"></i> ¡VEN CON TU TRAJE DE BAÑO! 🩱🩳
                 </div>
 
                 <!-- Event Details Grid -->
@@ -164,7 +170,7 @@
 
                 <!-- Memory Photos Gallery Carousel -->
                 <div class="gallery-section">
-                    <h3 class="gallery-title"><i class="fa-solid fa-images"></i> Recuerdos de Laura Gabriela</h3>
+                    <h3 class="gallery-title"><i class="fa-solid fa-images"></i> Recuerdos de Laura (9 Fotos)</h3>
                     <div class="gallery-scroll" id="galleryScroll">
                         <!-- Populated dynamically by game.js -->
                     </div>
@@ -173,7 +179,7 @@
                 <!-- RSVP / Confirm Button -->
                 <div class="rsvp-box">
                     <p class="rsvp-note">¡Esperamos contar con tu presencia!</p>
-                    <a href="https://wa.me/13463097313?text=¡Hola%20Elvira!%20Confirmo%20mi%20asistencia%20al%20cumpleaños%20de%20Laura%20Gabriela%20🎂❄️" target="_blank" class="btn-whatsapp glow-effect">
+                    <a href="https://wa.me/13463097313?text=¡Hola%20Elvira!%20Confirmo%20mi%20asistencia%20a%20la%20Pool%20Party%20de%20Laura%20🎂🏊‍♀️" target="_blank" class="btn-whatsapp glow-effect">
                         <i class="fa-brands fa-whatsapp"></i> Confirmar Asistencia con Elvira
                     </a>
                 </div>

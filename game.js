@@ -1,6 +1,6 @@
 /* ==========================================================================
-   Invitación Aventura Congelada - Laura Gabriela (4º Cumpleaños)
-   Game Engine: Breakout / Rompe-Hielo, Memory Popups, Web Audio & Navigation
+   Invitación Pool Party - Laura (4º Cumpleaños)
+   Game Engine: Crisp Crystal Ice, Preloaded Memory Popups, Clean Canvas
    ========================================================================== */
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -22,9 +22,10 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const memoryPopup = document.getElementById('memoryPopup');
     const memoryPopupImg = document.getElementById('memoryPopupImg');
+    const btnClosePopup = document.getElementById('btnClosePopup');
     const galleryScroll = document.getElementById('galleryScroll');
 
-    // --- MEMORY PHOTOS LIST ---
+    // --- ALL 9 MEMORY PHOTOS LIST ---
     const memoryPhotos = [
         './assets/photos/Imagen de Codex 19 sept 2026, 12_22_19 p.m..png',
         './assets/photos/Imagen de Codex 19 sept 2026, 12_29_57 p.m..png',
@@ -36,6 +37,14 @@ document.addEventListener('DOMContentLoaded', () => {
         './assets/photos/WhatsApp Image 2026-09-20 at 12.39.54 PM.jpeg',
         './assets/photos/WhatsApp Image 2026-09-20 at 12.40.43 PM.jpeg'
     ];
+
+    // Preload memory photos in browser memory
+    const preloadedImageCache = {};
+    memoryPhotos.forEach(src => {
+        const img = new Image();
+        img.src = src;
+        preloadedImageCache[src] = img;
+    });
 
     let unlockedPhotos = [];
 
@@ -59,7 +68,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 osc.type = 'sine';
                 osc.frequency.setValueAtTime(440, now);
                 osc.frequency.exponentialRampToValueAtTime(880, now + 0.1);
-                gain.gain.setValueAtTime(0.3, now);
+                gain.gain.setValueAtTime(0.25, now);
                 gain.gain.exponentialRampToValueAtTime(0.01, now + 0.1);
                 osc.connect(gain);
                 gain.connect(audioCtx.destination);
@@ -69,14 +78,13 @@ document.addEventListener('DOMContentLoaded', () => {
                 osc.type = 'triangle';
                 osc.frequency.setValueAtTime(600, now);
                 osc.frequency.exponentialRampToValueAtTime(1200, now + 0.15);
-                gain.gain.setValueAtTime(0.4, now);
+                gain.gain.setValueAtTime(0.35, now);
                 gain.gain.exponentialRampToValueAtTime(0.01, now + 0.15);
                 osc.connect(gain);
                 gain.connect(audioCtx.destination);
                 osc.start(now);
                 osc.stop(now + 0.15);
             } else if (type === 'photo') {
-                // Arpeggio for photo unlock magic!
                 const notes = [659.25, 830.61, 987.77, 1318.51];
                 notes.forEach((freq, idx) => {
                     const pOsc = audioCtx.createOscillator();
@@ -111,8 +119,8 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
 
-    // --- TRANSPARENT BACKGROUND HELPER (KEYING OUT BLACK BACKGROUNDS) ---
-    function makeTransparentCanvas(img, threshold = 40) {
+    // --- TRANSPARENT BACKGROUND HELPER ---
+    function makeTransparentCanvas(img, threshold = 35) {
         const offCanvas = document.createElement('canvas');
         offCanvas.width = img.naturalWidth || img.width;
         offCanvas.height = img.naturalHeight || img.height;
@@ -126,14 +134,13 @@ document.addEventListener('DOMContentLoaded', () => {
                 const r = data[i];
                 const g = data[i + 1];
                 const b = data[i + 2];
-                // If pixel is near black/dark, make transparent
                 if (r < threshold && g < threshold && b < threshold) {
-                    data[i + 3] = 0; // Alpha 0
+                    data[i + 3] = 0;
                 }
             }
             offCtx.putImageData(imgData, 0, 0);
         } catch (e) {
-            console.log('Canvas image data keying note:', e);
+            console.log('Canvas image keying note:', e);
         }
         return offCanvas;
     }
@@ -189,7 +196,7 @@ document.addEventListener('DOMContentLoaded', () => {
     drawSnow();
 
 
-    // --- SCREEN NAVIGATION & GALLERY POPULATION ---
+    // --- SCREEN NAVIGATION & POPUPS ---
     function showScreen(screenToShow) {
         [introScreen, gameScreen, inviteScreen].forEach(screen => {
             screen.classList.remove('active');
@@ -203,12 +210,12 @@ document.addEventListener('DOMContentLoaded', () => {
 
     function populateInviteGallery() {
         galleryScroll.innerHTML = '';
-        const photosToDisplay = unlockedPhotos.length > 0 ? unlockedPhotos : memoryPhotos;
+        const photosToDisplay = memoryPhotos; // Always display all 9 photos in the invitation gallery!
 
         photosToDisplay.forEach(photoSrc => {
             const item = document.createElement('div');
             item.className = 'gallery-item';
-            item.innerHTML = `<img src="${photoSrc}" alt="Recuerdo de Laura Gabriela">`;
+            item.innerHTML = `<img src="${photoSrc}" alt="Recuerdo de Laura">`;
             item.addEventListener('click', () => {
                 showMemoryPopup(photoSrc);
             });
@@ -216,18 +223,32 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
+    let popupTimeout = null;
+
     function showMemoryPopup(photoSrc) {
+        // Fix photo flashing bug: clear src first, set new src
+        memoryPopupImg.src = '';
         memoryPopupImg.src = photoSrc;
+        
         memoryPopup.classList.add('active');
         playIceSound('photo');
 
-        setTimeout(() => {
+        if (popupTimeout) clearTimeout(popupTimeout);
+        popupTimeout = setTimeout(() => {
             memoryPopup.classList.remove('active');
-        }, 2200);
+        }, 2400);
     }
 
-    memoryPopup.addEventListener('click', () => {
+    btnClosePopup.addEventListener('click', () => {
+        if (popupTimeout) clearTimeout(popupTimeout);
         memoryPopup.classList.remove('active');
+    });
+
+    memoryPopup.addEventListener('click', (e) => {
+        if (e.target === memoryPopup) {
+            if (popupTimeout) clearTimeout(popupTimeout);
+            memoryPopup.classList.remove('active');
+        }
     });
 
     btnStartGame.addEventListener('click', () => {
@@ -259,16 +280,19 @@ document.addEventListener('DOMContentLoaded', () => {
     const gameCanvas = document.getElementById('gameCanvas');
     const ctx = gameCanvas.getContext('2d');
 
-    // Image Loaders
+    // Clean Aurora Background
     const bgImg = new Image();
-    bgImg.src = './assets/Frozen_path_through_snowy_forest_20260919111318.jpeg';
+    bgImg.src = './assets/clean_frozen_bg.png';
 
+    // Snowball Sprite
     const snowballRaw = new Image();
     snowballRaw.src = './assets/Fluffy_white_snowball_with_ice_20260919111321.jpeg';
 
+    // Glowing 3D Crystal Ice Block
     const icebergRaw = new Image();
-    icebergRaw.src = './assets/Glowing_jagged_iceberg_isolated_20260919111325.jpeg';
+    icebergRaw.src = './assets/crystal_ice_block.png';
 
+    // Laura Portrait Avatar
     const characterImg = new Image();
     characterImg.src = './assets/foto_invitacion_LAU.jpeg';
 
@@ -282,7 +306,7 @@ document.addEventListener('DOMContentLoaded', () => {
     let isGameRunning = false;
 
     // Game Variables
-    let paddle = { x: 0, y: 0, width: 115, height: 26, speed: 8 };
+    let paddle = { x: 0, y: 0, width: 115, height: 26, speed: 8.5 };
     let ball = { x: 0, y: 0, radius: 14, dx: 4, dy: -5, speed: 5 };
     let bricks = [];
     let particles = [];
@@ -308,24 +332,25 @@ document.addEventListener('DOMContentLoaded', () => {
         photosCount.textContent = `0/${memoryPhotos.length}`;
 
         const padding = 8;
-        const offsetTop = 45;
+        const offsetTop = 40;
         const offsetLeft = 12;
 
         const brickWidth = (gameCanvas.width - (offsetLeft * 2) - (padding * (brickCols - 1))) / brickCols;
-        const brickHeight = Math.min(45, (gameCanvas.height * 0.22) / brickRows);
+        const brickHeight = Math.min(48, (gameCanvas.height * 0.24) / brickRows);
 
-        // Shuffle memory photos for random hidden blocks
-        const shuffledPhotos = [...memoryPhotos].sort(() => Math.random() - 0.5);
-        let photoIndex = 0;
+        // Assign all 9 memory photos across the 20 ice blocks
+        const photoAssignments = [...memoryPhotos];
+        // Fill remaining with random selections to ensure 9 unique are placed
+        while (photoAssignments.length < brickRows * brickCols) {
+            photoAssignments.push(memoryPhotos[Math.floor(Math.random() * memoryPhotos.length)]);
+        }
+        // Shuffle
+        photoAssignments.sort(() => Math.random() - 0.5);
+
+        let pIdx = 0;
 
         for (let r = 0; r < brickRows; r++) {
             for (let c = 0; c < brickCols; c++) {
-                let photoForBrick = null;
-                // Assign photo to some bricks
-                if (photoIndex < shuffledPhotos.length && (Math.random() > 0.3 || (r * brickCols + c) >= (brickRows * brickCols - shuffledPhotos.length + photoIndex))) {
-                    photoForBrick = shuffledPhotos[photoIndex++];
-                }
-
                 bricks.push({
                     x: offsetLeft + c * (brickWidth + padding),
                     y: offsetTop + r * (brickHeight + padding),
@@ -334,7 +359,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     active: true,
                     hitsRequired: (r === 0) ? 2 : 1,
                     hitsLeft: (r === 0) ? 2 : 1,
-                    photo: photoForBrick
+                    photo: photoAssignments[pIdx++] || null
                 });
             }
         }
@@ -356,8 +381,8 @@ document.addEventListener('DOMContentLoaded', () => {
         paddle.x = (gameCanvas.width - paddle.width) / 2;
         ball.x = gameCanvas.width / 2;
         ball.y = paddle.y - ball.radius - 5;
-        ball.dx = (Math.random() > 0.5 ? 1 : -1) * (3.5 + Math.random() * 1.5);
-        ball.dy = - (4.5 + Math.random());
+        ball.dx = (Math.random() > 0.5 ? 1 : -1) * (3.8 + Math.random() * 1.5);
+        ball.dy = - (4.8 + Math.random());
     }
 
     function initGame() {
@@ -414,7 +439,7 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
 
-    // --- PARTICLE EFFECTS & PHOTO POPUPS ---
+    // --- PARTICLE EFFECTS ---
     function createIceExplosion(x, y) {
         for (let i = 0; i < 18; i++) {
             particles.push({
@@ -461,13 +486,13 @@ document.addEventListener('DOMContentLoaded', () => {
 
         ctx.clearRect(0, 0, gameCanvas.width, gameCanvas.height);
 
-        // Draw Frozen Forest Background
+        // Draw Sleek Clean Aurora Background
         if (bgImg.complete && bgImg.naturalWidth !== 0) {
             ctx.drawImage(bgImg, 0, 0, gameCanvas.width, gameCanvas.height);
-            ctx.fillStyle = 'rgba(6, 17, 28, 0.35)';
+            ctx.fillStyle = 'rgba(4, 13, 26, 0.25)';
             ctx.fillRect(0, 0, gameCanvas.width, gameCanvas.height);
         } else {
-            ctx.fillStyle = '#0a1826';
+            ctx.fillStyle = '#06111c';
             ctx.fillRect(0, 0, gameCanvas.width, gameCanvas.height);
         }
 
@@ -524,8 +549,10 @@ document.addEventListener('DOMContentLoaded', () => {
                         playIceSound('break');
 
                         // Check if block has hidden photo!
-                        if (brick.photo && !unlockedPhotos.includes(brick.photo)) {
-                            unlockedPhotos.push(brick.photo);
+                        if (brick.photo) {
+                            if (!unlockedPhotos.includes(brick.photo)) {
+                                unlockedPhotos.push(brick.photo);
+                            }
                             photosCount.textContent = `${unlockedPhotos.length}/${memoryPhotos.length}`;
                             showMemoryPopup(brick.photo);
                         }
@@ -536,7 +563,7 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         });
 
-        // DRAW ICEBERG BRICKS (Sin fondo / Transparent)
+        // DRAW CRISP CRYSTAL ICE BLOCKS (High-Res 3D Glass)
         bricks.forEach(brick => {
             if (brick.active) {
                 ctx.save();
@@ -549,19 +576,19 @@ document.addEventListener('DOMContentLoaded', () => {
                     ctx.fillRect(brick.x, brick.y, brick.width, brick.height);
                 }
 
-                // Camera icon indicator if brick hides a memory photo
+                // Draw delicate ice sparkle star if brick contains photo (NO ugly camera emoji!)
                 if (brick.photo) {
-                    ctx.fillStyle = '#ffd700';
-                    ctx.font = '12px FontAwesome, sans-serif';
-                    ctx.textAlign = 'center';
-                    ctx.fillText('📷', brick.x + brick.width / 2, brick.y + brick.height / 2 + 4);
+                    ctx.fillStyle = 'rgba(255, 230, 0, 0.9)';
+                    ctx.beginPath();
+                    ctx.arc(brick.x + brick.width / 2, brick.y + brick.height / 2, 3, 0, Math.PI * 2);
+                    ctx.fill();
                 }
 
                 ctx.restore();
             }
         });
 
-        // DRAW PADDLE (Sled + Laura Portrait Badge)
+        // DRAW PADDLE (Sled + Perfect 1:1 Circular Laura Badge)
         ctx.save();
         let grad = ctx.createLinearGradient(paddle.x, paddle.y, paddle.x, paddle.y + paddle.height);
         grad.addColorStop(0, '#00d2ff');
@@ -573,9 +600,9 @@ document.addEventListener('DOMContentLoaded', () => {
         ctx.roundRect(paddle.x, paddle.y, paddle.width, paddle.height, 12);
         ctx.fill();
 
-        // Laura's character badge in center of paddle
+        // Laura's character badge in center of paddle (100% UN-DEFORMED SQUARE CROP TO CIRCLE)
         if (characterImg.complete && characterImg.naturalWidth !== 0) {
-            const badgeRadius = 18;
+            const badgeRadius = 16;
             const badgeX = paddle.x + paddle.width / 2;
             const badgeY = paddle.y + paddle.height / 2;
 
@@ -583,7 +610,17 @@ document.addEventListener('DOMContentLoaded', () => {
             ctx.beginPath();
             ctx.arc(badgeX, badgeY, badgeRadius, 0, Math.PI * 2);
             ctx.clip();
-            ctx.drawImage(characterImg, badgeX - badgeRadius, badgeY - badgeRadius, badgeRadius * 2, badgeRadius * 2);
+
+            // Calculate 1:1 square crop from source image so face is never squished/stretched!
+            const srcSize = Math.min(characterImg.naturalWidth, characterImg.naturalHeight);
+            const srcX = (characterImg.naturalWidth - srcSize) / 2;
+            const srcY = 0; // Top-centered crop for face
+
+            ctx.drawImage(
+                characterImg,
+                srcX, srcY, srcSize, srcSize, // Source crop
+                badgeX - badgeRadius, badgeY - badgeRadius, badgeRadius * 2, badgeRadius * 2 // Destination
+            );
             ctx.restore();
 
             ctx.strokeStyle = '#ffffff';
@@ -594,7 +631,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
         ctx.restore();
 
-        // DRAW BALL (Snowball - Sin fondo / Transparent)
+        // DRAW BALL (Snowball)
         ctx.save();
         if (snowballCanvas) {
             ctx.drawImage(snowballCanvas, ball.x - ball.radius, ball.y - ball.radius, ball.radius * 2, ball.radius * 2);
@@ -639,7 +676,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     function triggerConfetti() {
         confettiPieces = [];
-        const colors = ['#00d2ff', '#3a7bd5', '#ffffff', '#ffd700', '#ff65a3'];
+        const colors = ['#00d2ff', '#3a7bd5', '#ffffff', '#ffe600', '#ff65a3'];
         for (let i = 0; i < 120; i++) {
             confettiPieces.push({
                 x: Math.random() * confettiCanvas.width,
