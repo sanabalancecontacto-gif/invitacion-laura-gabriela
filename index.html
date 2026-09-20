@@ -8,15 +8,15 @@
     <!-- Meta tags SEO / WhatsApp Share -->
     <meta name="description" content="¡Estás invitado a la Aventura Congelada de Laura Gabriela en su Cumpleaños Número 4! Acompáñanos a celebrar.">
     <meta property="og:title" content="¡Invitación: 4º Cumpleaños de Laura Gabriela! ❄️">
-    <meta property="og:description" content="Ven a jugar y descubrir todos los detalles de la fiesta congelada de Laura Gabriela.">
-    <meta property="og:image" content="./assets/foto invitación.jpeg">
+    <meta property="og:description" content="Ven a jugar y descubrir los recuerdos y detalles de la fiesta congelada de Laura Gabriela.">
+    <meta property="og:image" content="./assets/foto_invitacion_LAU.jpeg">
     
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;600;700&family=Outfit:wght@300;400;600;800&family=Cinzel:wght@700&display=swap" rel="stylesheet">
     
-    <!-- FontAwesome for icons -->
+    <!-- FontAwesome icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
     <link rel="stylesheet" href="styles.css">
@@ -25,6 +25,15 @@
 
     <!-- Snowfall Canvas Overlay -->
     <canvas id="snowCanvas"></canvas>
+
+    <!-- Floating Memory Photo Popup Modal -->
+    <div id="memoryPopup" class="memory-popup">
+        <div class="polaroid-card">
+            <div class="polaroid-pin">❄️</div>
+            <img id="memoryPopupImg" src="" alt="Recuerdo de Laura Gabriela">
+            <p class="polaroid-caption">✨ ¡Recuerdo Descubierto! ✨</p>
+        </div>
+    </div>
 
     <!-- App Container -->
     <div id="appContainer">
@@ -43,12 +52,12 @@
 
                 <div class="avatar-preview">
                     <div class="ice-frame">
-                        <img src="./assets/personaje.jpeg" alt="Laura Gabriela" class="avatar-img">
+                        <img src="./assets/foto_invitacion_LAU.jpeg" alt="Laura Gabriela" class="avatar-img">
                     </div>
                 </div>
 
                 <p class="intro-desc">
-                    ¡El reino de Arendelle está congelado! Ayuda a Laura Gabriela a romper los bloques de hielo mágicos para descubrir la invitación a su fiesta.
+                    ¡El reino está congelado! Rompe los bloques de hielo mágicos para <strong>revelar fotos secretas</strong> de Laura Gabriela con su familia y amigos, y descubrir la invitación.
                 </p>
 
                 <div class="btn-group">
@@ -70,8 +79,8 @@
             <div class="game-header">
                 <div class="game-progress-bar">
                     <div class="progress-info">
-                        <span><i class="fa-solid fa-icicles"></i> Hielo Rompido:</span>
-                        <span id="progressPercent">0%</span>
+                        <span><i class="fa-solid fa-camera-retro"></i> Recuerdos: <strong id="photosCount">0/9</strong></span>
+                        <span><i class="fa-solid fa-icicles"></i> Hielo: <strong id="progressPercent">0%</strong></span>
                     </div>
                     <div class="bar-outer">
                         <div id="barInner" class="bar-inner" style="width: 0%;"></div>
@@ -110,7 +119,7 @@
                 <!-- Beautiful Un-damaged Photo Frame -->
                 <div class="photo-container">
                     <div class="royal-ice-frame">
-                        <img src="./assets/foto invitación.jpeg" alt="Laura Gabriela Cumpleaños 4" class="birthday-girl-photo">
+                        <img src="./assets/foto_invitacion_LAU.jpeg" alt="Laura Gabriela Cumpleaños 4" class="birthday-girl-photo">
                         <div class="frame-shine"></div>
                         <div class="corner-crystal top-left"></div>
                         <div class="corner-crystal top-right"></div>
@@ -150,6 +159,14 @@
                                 <i class="fa-solid fa-map-location-dot"></i> Abrir en Google Maps
                             </a>
                         </div>
+                    </div>
+                </div>
+
+                <!-- Memory Photos Gallery Carousel -->
+                <div class="gallery-section">
+                    <h3 class="gallery-title"><i class="fa-solid fa-images"></i> Recuerdos de Laura Gabriela</h3>
+                    <div class="gallery-scroll" id="galleryScroll">
+                        <!-- Populated dynamically by game.js -->
                     </div>
                 </div>
 
