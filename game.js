@@ -25,17 +25,19 @@ document.addEventListener('DOMContentLoaded', () => {
     const btnClosePopup = document.getElementById('btnClosePopup');
     const galleryScroll = document.getElementById('galleryScroll');
 
-    // --- ALL 9 MEMORY PHOTOS LIST ---
+    // --- ALL 11 MEMORY PHOTOS LIST ---
     const memoryPhotos = [
         './assets/photos/Imagen de Codex 19 sept 2026, 12_22_19 p.m..png',
         './assets/photos/Imagen de Codex 19 sept 2026, 12_29_57 p.m..png',
+        './assets/photos/WhatsApp Image 2026-09-06 at 11.27.38 PM.jpeg',
+        './assets/photos/WhatsApp Image 2026-09-06 at 11.27.38 jj.jpeg',
         './assets/photos/WhatsApp Image 2026-09-19 at 12.09.15 PM.jpeg',
         './assets/photos/WhatsApp Image 2026-09-19 at 12.16.35 PM.jpeg',
         './assets/photos/WhatsApp Image 2026-09-20 at 12.38.57 PM.jpeg',
         './assets/photos/WhatsApp Image 2026-09-20 at 12.39.52 PM.jpeg',
         './assets/photos/WhatsApp Image 2026-09-20 at 12.39.53 PM.jpeg',
         './assets/photos/WhatsApp Image 2026-09-20 at 12.39.54 PM.jpeg',
-        './assets/photos/WhatsApp Image 2026-09-20 at 12.40.43 PM.jpeg'
+        './assets/photos/WhatsApp Image 2026-09-ggg.jpeg'
     ];
 
     // Preload memory photos in browser memory
