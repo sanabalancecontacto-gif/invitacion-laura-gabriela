@@ -554,8 +554,9 @@ html, body {
 
 .royal-ice-frame {
     position: relative;
-    width: 210px;
-    height: 260px;
+    width: 240px;
+    height: 310px;
+    max-width: 92%;
     border-radius: 22px;
     padding: 6px;
     background: linear-gradient(135deg, rgba(255, 255, 255, 0.95), var(--primary-ice), rgba(58, 123, 213, 0.95));
@@ -566,10 +567,11 @@ html, body {
     width: 100%;
     height: 100%;
     object-fit: cover;
-    object-position: center top;
+    object-position: center 15%;
     border-radius: 16px;
     display: block;
     border: 2px solid rgba(255, 255, 255, 0.9);
+    background: #040d1a;
 }
 
 .frame-shine {

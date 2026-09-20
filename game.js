@@ -25,7 +25,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const btnClosePopup = document.getElementById('btnClosePopup');
     const galleryScroll = document.getElementById('galleryScroll');
 
-    // --- ALL 11 MEMORY PHOTOS LIST ---
+    // --- ALL 13 MEMORY PHOTOS LIST (NO REPETITIONS) ---
     const memoryPhotos = [
         './assets/photos/Imagen de Codex 19 sept 2026, 12_22_19 p.m..png',
         './assets/photos/Imagen de Codex 19 sept 2026, 12_29_57 p.m..png',
@@ -37,7 +37,9 @@ document.addEventListener('DOMContentLoaded', () => {
         './assets/photos/WhatsApp Image 2026-09-20 at 12.39.52 PM.jpeg',
         './assets/photos/WhatsApp Image 2026-09-20 at 12.39.53 PM.jpeg',
         './assets/photos/WhatsApp Image 2026-09-20 at 12.39.54 PM.jpeg',
-        './assets/photos/WhatsApp Image 2026-09-ggg.jpeg'
+        './assets/photos/WhatsApp Image 2026-09-ggg.jpeg',
+        './assets/photos/gfgd.jpeg',
+        './assets/photos/gfgfd.jpeg'
     ];
 
     // Preload memory photos in browser memory
@@ -49,6 +51,7 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     let unlockedPhotos = [];
+    let isGamePaused = false; // Pause ball when photo popup is open!
 
     // --- SOUND EFFECTS (Web Audio API) ---
     let audioCtx = null;
@@ -212,9 +215,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     function populateInviteGallery() {
         galleryScroll.innerHTML = '';
-        const photosToDisplay = memoryPhotos; // Always display all 9 photos in the invitation gallery!
-
-        photosToDisplay.forEach(photoSrc => {
+        memoryPhotos.forEach(photoSrc => {
             const item = document.createElement('div');
             item.className = 'gallery-item';
             item.innerHTML = `<img src="${photoSrc}" alt="Recuerdo de Laura">`;
@@ -228,7 +229,9 @@ document.addEventListener('DOMContentLoaded', () => {
     let popupTimeout = null;
 
     function showMemoryPopup(photoSrc) {
-        // Fix photo flashing bug: clear src first, set new src
+        // PAUSE THE BALL SO IT DOES NOT CONTINUE BOUNCING OR TRIGGERING OTHER POPUPS!
+        isGamePaused = true;
+
         memoryPopupImg.src = '';
         memoryPopupImg.src = photoSrc;
         
@@ -237,19 +240,22 @@ document.addEventListener('DOMContentLoaded', () => {
 
         if (popupTimeout) clearTimeout(popupTimeout);
         popupTimeout = setTimeout(() => {
-            memoryPopup.classList.remove('active');
-        }, 2400);
+            closeMemoryPopup();
+        }, 2600);
     }
 
-    btnClosePopup.addEventListener('click', () => {
+    function closeMemoryPopup() {
         if (popupTimeout) clearTimeout(popupTimeout);
         memoryPopup.classList.remove('active');
-    });
+        // RESUME THE GAME BALL MOVEMENT!
+        isGamePaused = false;
+    }
+
+    btnClosePopup.addEventListener('click', closeMemoryPopup);
 
     memoryPopup.addEventListener('click', (e) => {
-        if (e.target === memoryPopup) {
-            if (popupTimeout) clearTimeout(popupTimeout);
-            memoryPopup.classList.remove('active');
+        if (e.target === memoryPopup || e.target.classList.contains('polaroid-card')) {
+            closeMemoryPopup();
         }
     });
 
@@ -315,7 +321,7 @@ document.addEventListener('DOMContentLoaded', () => {
     
     const brickRows = 4;
     const brickCols = 5;
-    let totalBricks = brickRows * brickCols;
+    let totalBricks = brickRows * brickCols; // 20 blocks total
     let brokenBricks = 0;
 
     function resizeGameCanvas() {
@@ -331,6 +337,7 @@ document.addEventListener('DOMContentLoaded', () => {
         bricks = [];
         brokenBricks = 0;
         unlockedPhotos = [];
+        isGamePaused = false;
         photosCount.textContent = `0/${memoryPhotos.length}`;
 
         const padding = 8;
@@ -340,19 +347,21 @@ document.addEventListener('DOMContentLoaded', () => {
         const brickWidth = (gameCanvas.width - (offsetLeft * 2) - (padding * (brickCols - 1))) / brickCols;
         const brickHeight = Math.min(48, (gameCanvas.height * 0.24) / brickRows);
 
-        // Assign all 9 memory photos across the 20 ice blocks
-        const photoAssignments = [...memoryPhotos];
-        // Fill remaining with random selections to ensure 9 unique are placed
-        while (photoAssignments.length < brickRows * brickCols) {
-            photoAssignments.push(memoryPhotos[Math.floor(Math.random() * memoryPhotos.length)]);
-        }
-        // Shuffle
-        photoAssignments.sort(() => Math.random() - 0.5);
+        // Assign exactly 13 unique photos to 13 distinct ice blocks, remaining 7 blocks have NO photo!
+        const shuffledIndices = Array.from({ length: brickRows * brickCols }, (_, i) => i).sort(() => Math.random() - 0.5);
+        const photoMap = {};
 
-        let pIdx = 0;
+        for (let i = 0; i < memoryPhotos.length; i++) {
+            const brickIdx = shuffledIndices[i];
+            photoMap[brickIdx] = memoryPhotos[i];
+        }
+
+        let blockIndex = 0;
 
         for (let r = 0; r < brickRows; r++) {
             for (let c = 0; c < brickCols; c++) {
+                const photoForThisBlock = photoMap[blockIndex] || null;
+
                 bricks.push({
                     x: offsetLeft + c * (brickWidth + padding),
                     y: offsetTop + r * (brickHeight + padding),
@@ -361,8 +370,9 @@ document.addEventListener('DOMContentLoaded', () => {
                     active: true,
                     hitsRequired: (r === 0) ? 2 : 1,
                     hitsLeft: (r === 0) ? 2 : 1,
-                    photo: photoAssignments[pIdx++] || null
+                    photo: photoForThisBlock
                 });
+                blockIndex++;
             }
         }
         totalBricks = bricks.reduce((acc, b) => acc + b.hitsRequired, 0);
@@ -410,17 +420,18 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // --- CONTROLS ---
     function movePaddleTo(clientX) {
+        if (isGamePaused) return; // Freeze paddle too while popup is open!
         const rect = gameCanvas.getBoundingClientRect();
         const touchX = clientX - rect.left;
         paddle.x = Math.max(0, Math.min(gameCanvas.width - paddle.width, touchX - paddle.width / 2));
     }
 
     window.addEventListener('mousemove', (e) => {
-        if (isGameRunning) movePaddleTo(e.clientX);
+        if (isGameRunning && !isGamePaused) movePaddleTo(e.clientX);
     });
 
     window.addEventListener('touchmove', (e) => {
-        if (isGameRunning && e.touches.length > 0) {
+        if (isGameRunning && !isGamePaused && e.touches.length > 0) {
             movePaddleTo(e.touches[0].clientX);
             e.preventDefault();
         }
@@ -498,72 +509,75 @@ document.addEventListener('DOMContentLoaded', () => {
             ctx.fillRect(0, 0, gameCanvas.width, gameCanvas.height);
         }
 
-        // Move Paddle via keyboard
-        if (rightPressed && paddle.x < gameCanvas.width - paddle.width) paddle.x += paddle.speed;
-        if (leftPressed && paddle.x > 0) paddle.x -= paddle.speed;
+        // ONLY UPDATE PHYSICS & MOVEMENT IF NOT PAUSED BY POPUP!
+        if (!isGamePaused) {
+            // Move Paddle via keyboard
+            if (rightPressed && paddle.x < gameCanvas.width - paddle.width) paddle.x += paddle.speed;
+            if (leftPressed && paddle.x > 0) paddle.x -= paddle.speed;
 
-        // Move Ball
-        ball.x += ball.dx;
-        ball.y += ball.dy;
+            // Move Ball
+            ball.x += ball.dx;
+            ball.y += ball.dy;
 
-        // Wall collisions
-        if (ball.x + ball.radius > gameCanvas.width || ball.x - ball.radius < 0) {
-            ball.dx = -ball.dx;
-            playIceSound('bounce');
-        }
-        if (ball.y - ball.radius < 0) {
-            ball.dy = -ball.dy;
-            playIceSound('bounce');
-        }
-
-        // Paddle collision
-        if (ball.y + ball.radius >= paddle.y && ball.y - ball.radius <= paddle.y + paddle.height) {
-            if (ball.x >= paddle.x && ball.x <= paddle.x + paddle.width) {
-                let hitPos = (ball.x - (paddle.x + paddle.width / 2)) / (paddle.width / 2);
-                ball.dx = hitPos * 6.5;
-                ball.dy = -Math.abs(ball.dy);
+            // Wall collisions
+            if (ball.x + ball.radius > gameCanvas.width || ball.x - ball.radius < 0) {
+                ball.dx = -ball.dx;
                 playIceSound('bounce');
             }
-        }
+            if (ball.y - ball.radius < 0) {
+                ball.dy = -ball.dy;
+                playIceSound('bounce');
+            }
 
-        // Ball reset at bottom
-        if (ball.y - ball.radius > gameCanvas.height) {
-            resetBallAndPaddle();
-        }
-
-        // Brick collisions
-        bricks.forEach(brick => {
-            if (brick.active) {
-                if (ball.x + ball.radius > brick.x &&
-                    ball.x - ball.radius < brick.x + brick.width &&
-                    ball.y + ball.radius > brick.y &&
-                    ball.y - ball.radius < brick.y + brick.height) {
-
-                    ball.dy = -ball.dy;
-                    brick.hitsLeft--;
-                    brokenBricks++;
-                    updateProgress();
-
-                    createIceExplosion(ball.x, ball.y);
-
-                    if (brick.hitsLeft <= 0) {
-                        brick.active = false;
-                        playIceSound('break');
-
-                        // Check if block has hidden photo!
-                        if (brick.photo) {
-                            if (!unlockedPhotos.includes(brick.photo)) {
-                                unlockedPhotos.push(brick.photo);
-                            }
-                            photosCount.textContent = `${unlockedPhotos.length}/${memoryPhotos.length}`;
-                            showMemoryPopup(brick.photo);
-                        }
-                    } else {
-                        playIceSound('bounce');
-                    }
+            // Paddle collision
+            if (ball.y + ball.radius >= paddle.y && ball.y - ball.radius <= paddle.y + paddle.height) {
+                if (ball.x >= paddle.x && ball.x <= paddle.x + paddle.width) {
+                    let hitPos = (ball.x - (paddle.x + paddle.width / 2)) / (paddle.width / 2);
+                    ball.dx = hitPos * 6.5;
+                    ball.dy = -Math.abs(ball.dy);
+                    playIceSound('bounce');
                 }
             }
-        });
+
+            // Ball reset at bottom
+            if (ball.y - ball.radius > gameCanvas.height) {
+                resetBallAndPaddle();
+            }
+
+            // Brick collisions
+            bricks.forEach(brick => {
+                if (brick.active) {
+                    if (ball.x + ball.radius > brick.x &&
+                        ball.x - ball.radius < brick.x + brick.width &&
+                        ball.y + ball.radius > brick.y &&
+                        ball.y - ball.radius < brick.y + brick.height) {
+
+                        ball.dy = -ball.dy;
+                        brick.hitsLeft--;
+                        brokenBricks++;
+                        updateProgress();
+
+                        createIceExplosion(ball.x, ball.y);
+
+                        if (brick.hitsLeft <= 0) {
+                            brick.active = false;
+                            playIceSound('break');
+
+                            // Check if block has hidden photo!
+                            if (brick.photo) {
+                                if (!unlockedPhotos.includes(brick.photo)) {
+                                    unlockedPhotos.push(brick.photo);
+                                }
+                                photosCount.textContent = `${unlockedPhotos.length}/${memoryPhotos.length}`;
+                                showMemoryPopup(brick.photo);
+                            }
+                        } else {
+                            playIceSound('bounce');
+                        }
+                    }
+                }
+            });
+        }
 
         // DRAW CRISP CRYSTAL ICE BLOCKS (High-Res 3D Glass)
         bricks.forEach(brick => {
@@ -578,7 +592,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     ctx.fillRect(brick.x, brick.y, brick.width, brick.height);
                 }
 
-                // Draw delicate ice sparkle star if brick contains photo (NO ugly camera emoji!)
+                // Draw delicate ice sparkle star if brick contains photo
                 if (brick.photo) {
                     ctx.fillStyle = 'rgba(255, 230, 0, 0.9)';
                     ctx.beginPath();
@@ -613,15 +627,14 @@ document.addEventListener('DOMContentLoaded', () => {
             ctx.arc(badgeX, badgeY, badgeRadius, 0, Math.PI * 2);
             ctx.clip();
 
-            // Calculate 1:1 square crop from source image so face is never squished/stretched!
             const srcSize = Math.min(characterImg.naturalWidth, characterImg.naturalHeight);
             const srcX = (characterImg.naturalWidth - srcSize) / 2;
-            const srcY = 0; // Top-centered crop for face
+            const srcY = 0;
 
             ctx.drawImage(
                 characterImg,
-                srcX, srcY, srcSize, srcSize, // Source crop
-                badgeX - badgeRadius, badgeY - badgeRadius, badgeRadius * 2, badgeRadius * 2 // Destination
+                srcX, srcY, srcSize, srcSize,
+                badgeX - badgeRadius, badgeY - badgeRadius, badgeRadius * 2, badgeRadius * 2
             );
             ctx.restore();
 
